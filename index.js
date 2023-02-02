@@ -9,6 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
+const writeToFile = require("./src/generate-page");
 
 const TEAM = [];
 
@@ -125,7 +126,7 @@ const role_specific_questions = {
     },
     intern: {
         type: 'input',
-        name: 'office_number',
+        name: 'school',
         message: "What is your intern's school name?",
         validate: function (input){
             return required(input, 'School name')
@@ -170,7 +171,10 @@ async function init(){
     console.log('init')
     await managerPrompt()
     await menuPrompt();
+    console.log('Your team: ', TEAM)
     console.log("End")
+    html = render(TEAM);
+    writeToFile(html, OUTPUT_DIR, outputPath);
 }
 
 async function menuPrompt(){
